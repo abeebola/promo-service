@@ -10,6 +10,7 @@ namespace PromoCodesAPI.Data
         {
         }
 
+        public DbSet<Service> Services { get; set; }
         public DbSet<User> Users { get; set; }
     }
 }

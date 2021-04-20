@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using PromoCodesAPI.Data;
+using PromoCodesAPI.Services.ServiceService;
 
 namespace PromoCodesAPI
 {
@@ -22,8 +23,10 @@ namespace PromoCodesAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers();
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
+                .AddScoped<IServiceService, ServiceService>()
+                .AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PromoCodesAPI", Version = "v1" });
