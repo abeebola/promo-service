@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  promocodesapi:
+    image: ${DOCKER_REGISTRY-}promocodesapi
+    build:
+      context: .
+      dockerfile: PromoCodesAPI/Dockerfile
