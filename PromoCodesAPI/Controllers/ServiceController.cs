@@ -12,11 +12,11 @@ namespace PromoCodesAPI.Controllers
 {
     [ApiController]
     [Route("/services")]
-    public class PromoServiceController : ControllerBase
+    public class ServiceController : ControllerBase
     {
         private readonly IServiceService _serviceService;
 
-        public PromoServiceController(IServiceService serviceService)
+        public ServiceController(IServiceService serviceService)
         {
             _serviceService = serviceService;
         }
@@ -35,8 +35,21 @@ namespace PromoCodesAPI.Controllers
                 return BadRequest();
             }
 
-            var service = await _serviceService.AddService(serviceDto);
-            return CreatedAtAction(nameof(Index), new { Id = service.Id }, service);
+            try
+            {
+                var service = await _serviceService.AddService(serviceDto);
+                return CreatedAtAction(nameof(Index), new { Id = service.Id }, service);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.ToLower() == "conflict")
+                {
+                    return Conflict($"Service with the name: {serviceDto.Name} already exists.");
+                }
+
+                return StatusCode(500);
+            }
+            
         }
     }
 }
