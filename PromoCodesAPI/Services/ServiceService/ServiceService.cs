@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PromoCodesAPI.Data;
@@ -15,10 +16,14 @@ namespace PromoCodesAPI.Services.ServiceService
             _context = applicationContext;
         }
 
-        public async Task<List<ServiceResponse>> GetAll()
+        public async Task<List<ServiceResponse>> GetAll(string name)
         {
-            var services = await _context.Services.ToListAsync();
-            return services.ConvertAll(x => x.ToDTO());
+            var query =  _context.Services.AsQueryable();
+            if (name != null)
+            {
+                query = query.Where(x => x.Name.Contains(name));
+            }
+            return await query.Select(x => x.ToDTO()).ToListAsync();
         }
 
         public async Task<ServiceResponse> AddService(AddServiceDto serviceDTO)
@@ -46,6 +51,12 @@ namespace PromoCodesAPI.Services.ServiceService
         public async Task<ServiceResponse> UpdateService(UpdateServiceDto serviceDTO)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResponse> GetById(string id)
+        {
+            var service = await _context.Services.FirstOrDefaultAsync(x => x.Id.ToString() == id);
+            return service?.ToDTO();
         }
     }
 }

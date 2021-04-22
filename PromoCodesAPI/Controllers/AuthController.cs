@@ -13,12 +13,14 @@ namespace PromoCodesAPI.Controllers
     public class AuthController : ControllerBase
     {
         [HttpPost]
+        [Route("login")]
         public IActionResult Login()
         {
             return Ok();
         }
 
         [HttpPost]
+        [Route("logout")]
         public IActionResult Logout()
         {
             return Ok();

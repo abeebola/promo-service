@@ -22,9 +22,16 @@ namespace PromoCodesAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<List<ServiceResponse>> GetAll()
+        public async Task<List<ServiceResponse>> GetAll(string name = null)
         {
-            return await _serviceService.GetAll();
+            return await _serviceService.GetAll(name);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ServiceResponse> GetByID(string id)
+        {
+            return await _serviceService.GetById(id);
         }
 
         [HttpPost]
@@ -38,7 +45,7 @@ namespace PromoCodesAPI.Controllers
             try
             {
                 var service = await _serviceService.AddService(serviceDto);
-                return CreatedAtAction(nameof(Index), new { Id = service.Id }, service);
+                return CreatedAtAction(nameof(GetByID), new { service.Id }, service);
             }
             catch (Exception ex)
             {
@@ -49,7 +56,6 @@ namespace PromoCodesAPI.Controllers
 
                 return StatusCode(500);
             }
-            
         }
     }
 }
