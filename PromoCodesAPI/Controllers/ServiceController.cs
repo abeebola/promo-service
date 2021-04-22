@@ -22,9 +22,9 @@ namespace PromoCodesAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<List<ServiceResponse>> GetAll()
         {
-            return Ok("Okay.");
+            return await _serviceService.GetAll();
         }
 
         [HttpPost]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PromoCodesAPI.Data;
@@ -12,6 +13,12 @@ namespace PromoCodesAPI.Services.ServiceService
         public ServiceService(ApplicationContext applicationContext)
         {
             _context = applicationContext;
+        }
+
+        public async Task<List<ServiceResponse>> GetAll()
+        {
+            var services = await _context.Services.ToListAsync();
+            return services.ConvertAll(x => x.ToDTO());
         }
 
         public async Task<ServiceResponse> AddService(AddServiceDto serviceDTO)

@@ -41,6 +41,16 @@ namespace Tests
             Assert.IsInstanceOfType(result, typeof(ConflictObjectResult));
         }
 
+        [TestMethod]
+        public async Task GetAll_SHouldReturnAllServices()
+        {
+            var controller = new ServiceController(_service);
+            var services = await controller.GetAll();
+
+            Assert.IsNotNull(services);
+            Assert.IsTrue(services.Count > 0);
+        }
+
         AddServiceDto GetServiceDto()
         {
             return new AddServiceDto
