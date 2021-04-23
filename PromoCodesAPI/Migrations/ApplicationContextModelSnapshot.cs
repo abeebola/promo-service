@@ -26,7 +26,8 @@ namespace PromoCodesAPI.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp without time zone")
+                        .HasPrecision(3);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -37,7 +38,8 @@ namespace PromoCodesAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp without time zone")
+                        .HasPrecision(3);
 
                     b.HasKey("Id");
 
@@ -51,7 +53,8 @@ namespace PromoCodesAPI.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp without time zone")
+                        .HasPrecision(3);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -70,7 +73,8 @@ namespace PromoCodesAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp without time zone")
+                        .HasPrecision(3);
 
                     b.HasKey("Id");
 

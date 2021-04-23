@@ -11,6 +11,7 @@ namespace PromoCodesAPI.Migrations
                 name: "CreatedAt",
                 table: "Users",
                 type: "timestamp without time zone",
+                precision: 3,
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
@@ -18,6 +19,7 @@ namespace PromoCodesAPI.Migrations
                 name: "UpdatedAt",
                 table: "Users",
                 type: "timestamp without time zone",
+                precision: 3,
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
         }
