@@ -16,14 +16,22 @@ namespace PromoCodesAPI.Services.ServiceService
             _context = applicationContext;
         }
 
-        public async Task<List<ServiceResponse>> GetAll(string name)
+        public async Task<List<ServiceResponse>> GetAll(string name, DateTime? lastTimestamp)
         {
-            var query =  _context.Services.AsQueryable();
+            var query = _context.Services.AsQueryable();
+
             if (name != null)
             {
-                query = query.Where(x => x.Name.Contains(name));
+                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower()));
             }
-            return await query.Select(x => x.ToDTO()).ToListAsync();
+
+            if (lastTimestamp != null)
+            {
+                query = query.Where(x => x.CreatedAt < lastTimestamp);
+            }
+            return await query.OrderByDescending(x => x.CreatedAt)
+                .Select(x => x.ToDTO())   
+                .ToListAsync();
         }
 
         public async Task<ServiceResponse> AddService(AddServiceDto serviceDTO)

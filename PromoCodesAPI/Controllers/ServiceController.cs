@@ -22,9 +22,11 @@ namespace PromoCodesAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<List<ServiceResponse>> GetAll(string name = null)
+        public async Task<List<ServiceResponse>> GetAll(
+            string name = null, [FromQuery(Name = "last_ts")]DateTime? lastTimestamp = null
+            )
         {
-            return await _serviceService.GetAll(name);
+            return await _serviceService.GetAll(name, lastTimestamp);
         }
 
         [HttpGet]
