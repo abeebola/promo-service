@@ -17,6 +17,23 @@ namespace PromoCodesAPI.DTOs
             public string Password { get; set; }
         }
 
+        public class LoginDto
+        {
+            [Required]
+            public string Email { get; set; }
+            [Required]
+            public string Password { get; set; }
+        }
+
+        public class LoginResponse
+        {
+            public string Id { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Email { get; set; }
+            public string Token { get; set; }
+        }
+
         public class UserResponse
         {
             public string Id { get; set; }

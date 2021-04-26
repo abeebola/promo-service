@@ -20,8 +20,7 @@ namespace PromoCodesAPI.Services.UserService
         public async Task<UserDTO.UserResponse> AddUser(UserDTO.AddUserDto userDto)
         {
             // Check if name already exists
-            var exists = await _context.Users
-                .FirstOrDefaultAsync(x => x.Email.ToLower() == userDto.Email.ToLower());
+            var exists = await UserExistsByEmail(userDto.Email);
 
             if (exists != null)
             {
@@ -40,6 +39,18 @@ namespace PromoCodesAPI.Services.UserService
             await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();
             return newUser.ToDTO();
+        }
+
+        public async Task<User> GetById(string id)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+        }
+
+        public async Task<User> UserExistsByEmail(string email)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
         }
 
         private string GeneratePasswordHash(User user, string password)

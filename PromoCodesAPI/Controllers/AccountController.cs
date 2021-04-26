@@ -22,6 +22,7 @@ namespace PromoCodesAPI.Controllers
         }
 
         [HttpPost]
+        [Route("register")]
         public async Task<IActionResult> Register(AddUserDto userDto)
         {
             if (!ModelState.IsValid)
@@ -32,7 +33,7 @@ namespace PromoCodesAPI.Controllers
             try
             {
                 var newUser = await _userService.AddUser(userDto);
-                return CreatedAtAction("GetById", nameof(UserController), new { Id = newUser.Id }, newUser);
+                return CreatedAtRoute(nameof(UserController.GetById), new { newUser.Id }, newUser);
 
             } catch (Exception ex)
             {

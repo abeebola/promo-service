@@ -19,8 +19,8 @@ namespace PromoCodesAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        [Route("{id}", Name = "GetById")]
+        public async Task<IActionResult> GetById(string Id)
         {
             return Ok();
         }

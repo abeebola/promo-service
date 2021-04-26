@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PromoCodesAPI.Controllers;
+using PromoCodesAPI.Data;
 using PromoCodesAPI.Services.ServiceService;
 using PromoCodesAPI.Services.UserService;
 using Tests.Data;
@@ -14,10 +15,12 @@ namespace Tests
     public class TestAccountController
     {
         private readonly IUserService _service;
+        private readonly ApplicationContext _applicationContext;
 
         public TestAccountController()
         {
-            _service = new UserService(TestAppContext.GetContext());
+            _applicationContext = TestAppContext.GetContext();
+            _service = new UserService(_applicationContext);
         }
 
         [TestMethod]
@@ -25,7 +28,7 @@ namespace Tests
         {
             var controller = new AccountController(_service);
             var userDto = GetUserDto();
-            var result = await controller.Register(userDto) as CreatedAtActionResult;
+            var result = await controller.Register(userDto) as CreatedAtRouteResult;
             var user = result.Value as UserResponse;
 
             Assert.IsNotNull(result);
@@ -41,6 +44,15 @@ namespace Tests
             var result = await controller.Register(userDto);
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof(ConflictObjectResult));
+        }
+
+        [ClassCleanup]
+        public async static Task RemoveUsers()
+        {
+            var context = TestAppContext.GetContext();
+            var allUsers = context.Users;
+            context.Users.RemoveRange(allUsers);
+            await context.SaveChangesAsync();
         }
 
         private AddUserDto GetUserDto()

@@ -11,6 +11,7 @@ namespace PromoCodesAPI.Services.ServiceService
     public class ServiceService : IServiceService
     {
         private ApplicationContext _context;
+
         public ServiceService(ApplicationContext applicationContext)
         {
             _context = applicationContext;
