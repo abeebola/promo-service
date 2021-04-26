@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PromoCodesAPI.DTOs;
 using PromoCodesAPI.Services.ServiceService;
@@ -12,6 +13,7 @@ namespace PromoCodesAPI.Controllers
 {
     [ApiController]
     [Route("/services")]
+    [Authorize]
     public class ServiceController : ControllerBase
     {
         private readonly IServiceService _serviceService;

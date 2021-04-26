@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PromoCodesAPI.Services.AuthService;
 using static PromoCodesAPI.DTOs.UserDTO;
@@ -12,6 +13,7 @@ namespace PromoCodesAPI.Controllers
 {
     [Route("/auth")]
     [ApiController]
+    [Authorize]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -23,6 +25,7 @@ namespace PromoCodesAPI.Controllers
 
         [HttpPost]
         [Route("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var user = await _authService.LoginInUser(loginDto);
