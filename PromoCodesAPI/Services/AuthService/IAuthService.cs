@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using static PromoCodesAPI.DTOs.UserDTO;
+using PromoCodesAPI.DTOs;
 
 namespace PromoCodesAPI.Services.AuthService
 {

@@ -17,7 +17,7 @@ namespace PromoCodesAPI.Services.UserService
             _context = context;
         }
 
-        public async Task<UserDTO.UserResponse> AddUser(UserDTO.AddUserDto userDto)
+        public async Task<UserResponse> AddUser(AddUserDto userDto)
         {
             // Check if name already exists
             var exists = await UserExistsByEmail(userDto.Email);

@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static PromoCodesAPI.DTOs.UserDTO;
+using PromoCodesAPI.DTOs;
 
 namespace PromoCodesAPI.Models
 {
@@ -18,6 +19,8 @@ namespace PromoCodesAPI.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
+        public ICollection<Bonus> ServiceBonuses {get;set;}
+
         public UserResponse ToDTO()
         {
             return new UserResponse
@@ -27,7 +30,8 @@ namespace PromoCodesAPI.Models
                 LastName = LastName,
                 Email = Email,
                 CreatedAt = CreatedAt,
-                UpdatedAt = UpdatedAt
+                UpdatedAt = UpdatedAt,
+                ServiceBonuses = this.ServiceBonuses
             };
         }
     }

@@ -12,6 +12,7 @@ namespace PromoCodesAPI.Services.ServiceService
     {
         Task<List<ServiceResponse>> GetAll(string name, DateTime? lastTimestamp);
         Task<ServiceResponse> GetById(string id);
+        Task<ServiceResponse> AddBonus(AddBonusDto bonusDto, string userId);
         Task<ServiceResponse> AddService(AddServiceDto serviceDTO);
         Task<ServiceResponse> UpdateService(UpdateServiceDto serviceDTO);
     }

@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -58,7 +57,6 @@ namespace PromoCodesAPI
                             var userId = context.Principal.Identity.Name;
                             
                             var user = await userService.GetById(userId);
-                            Console.WriteLine($"User: {user.Email}");
                             if (user == null)
                             {
                                 context.Fail("Unathorized");

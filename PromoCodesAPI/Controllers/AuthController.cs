@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PromoCodesAPI.Services.AuthService;
-using static PromoCodesAPI.DTOs.UserDTO;
+using PromoCodesAPI.DTOs;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

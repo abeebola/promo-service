@@ -7,7 +7,7 @@ using PromoCodesAPI.Data;
 using PromoCodesAPI.Services.ServiceService;
 using PromoCodesAPI.Services.UserService;
 using Tests.Data;
-using static PromoCodesAPI.DTOs.UserDTO;
+using PromoCodesAPI.DTOs;
 
 namespace Tests
 {

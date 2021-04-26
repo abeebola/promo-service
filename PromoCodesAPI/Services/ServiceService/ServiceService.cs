@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PromoCodesAPI.Data;
 using PromoCodesAPI.DTOs;
+using PromoCodesAPI.Models;
 
 namespace PromoCodesAPI.Services.ServiceService
 {
@@ -64,8 +65,41 @@ namespace PromoCodesAPI.Services.ServiceService
 
         public async Task<ServiceResponse> GetById(string id)
         {
-            var service = await _context.Services.FirstOrDefaultAsync(x => x.Id.ToString() == id);
+            var service = await _context.Services.Include(x => x.UserBonuses).ThenInclude(y => y.User)
+                .FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
             return service?.ToDTO();
+        }
+
+        public async Task<ServiceResponse> AddBonus(AddBonusDto bonusDto, string userId)
+        {
+            var service = await _context.Services.FirstOrDefaultAsync(x => x.Id == bonusDto.ServiceId);
+            if (service == null)
+            {
+                return null;
+            }
+
+            var user = await _context.Users.Include(x => x.ServiceBonuses).FirstOrDefaultAsync(x => x.Id == Guid.Parse(userId));
+            if (user == null)
+            {
+                return null;
+            }
+
+            // Bonus already exists for this user
+            if (user.ServiceBonuses.Any(x => x.ServiceId == bonusDto.ServiceId))
+            {
+                throw new Exception("Conflict");
+            }
+
+            var bonus = new Bonus
+            {
+                ServiceId = service.Id,
+                UserId = user.Id
+            };
+
+            await _context.ServiceBonuses.AddAsync(bonus);
+            await _context.SaveChangesAsync();
+            var result = await _context.Services.Include(x => x.UserBonuses).ThenInclude(y => y.User).FirstOrDefaultAsync(x => x.Id == service.Id);
+            return result?.ToDTO();
         }
     }
 }

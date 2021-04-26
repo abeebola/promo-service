@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -73,6 +74,40 @@ namespace PromoCodesAPI.Controllers
                 if (ex.Message.ToLower() == "conflict")
                 {
                     return Conflict($"Service with the name: {serviceDto.Name} already exists.");
+                }
+
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPost]
+        [Route("bonus")]
+        public async Task<IActionResult> AddBonus(AddBonusDto bonusDto)
+        {
+            // get current user. This can be further extracted into a helper function
+            // or added to a custom, base controller that the other controllers inherit from
+            var userClaims = this.User.Claims;
+            var userId = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var service = await _serviceService.AddBonus(bonusDto, userId);
+                if (service == null){
+                    return BadRequest("User or service does not exist.");
+                }
+
+                return Ok(service);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.ToLower() == "conflict")
+                {
+                    return Conflict($"You already have an active bonus for this service.");
                 }
 
                 return StatusCode(500);

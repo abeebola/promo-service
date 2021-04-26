@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using PromoCodesAPI.Controllers;
+using PromoCodesAPI.Data;
 using PromoCodesAPI.DTOs;
 using PromoCodesAPI.Services.ServiceService;
+using PromoCodesAPI.Services.UserService;
 using Tests.Data;
 
 namespace Tests
@@ -13,10 +20,14 @@ namespace Tests
     public class TestServiceController
     {
         private readonly IServiceService _service;
+        public readonly ApplicationContext _context;
+        private readonly ServiceController _controller;
 
         public TestServiceController()
         { 
-            _service = new ServiceService(TestAppContext.GetContext());
+            _context = TestAppContext.GetContext();
+            _service = new ServiceService(_context);
+            _controller = new ServiceController(_service);
         }
 
         [TestMethod]
@@ -83,6 +94,46 @@ namespace Tests
 
             Assert.IsNotNull(returnedService);
             Assert.AreEqual(returnedService.Id, service.Id);
+        }
+
+        [TestMethod]
+        public async Task AddBonus_ShouldReturnServiceAndBonus()
+        {
+            var controller = new ServiceController(_service);
+            var serviceDto = GetServiceDto();
+            var service = (await controller.GetAll(serviceDto.Name))[0];
+            var user = await _context.Users.FirstOrDefaultAsync();
+
+            var bonusDto = new AddBonusDto 
+            {
+                PromoCode = "itpromocodes",
+                ServiceId = Guid.Parse(service.Id),
+            };
+
+            // mock current user user
+            var claims = new ClaimsIdentity(
+                 new Claim[]
+                    {
+                        new Claim(ClaimTypes.Name, user.Id.ToString())
+                    }
+            );
+
+            var claimsPrincipal = new ClaimsPrincipal(claims);
+            var httpContext = new DefaultHttpContext();
+            httpContext.User = claimsPrincipal;
+
+            var controllerContext = new ControllerContext(){
+                HttpContext = httpContext
+            };
+
+            controller.ControllerContext = controllerContext;
+
+            // Add bonus
+            var result = await controller.AddBonus(bonusDto) as OkObjectResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result.Value, typeof(ServiceResponse));
         }
 
         AddServiceDto GetServiceDto()

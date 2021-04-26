@@ -13,5 +13,11 @@ namespace PromoCodesAPI.Data
 
         public DbSet<Service> Services { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Bonus> ServiceBonuses { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Bonus>().HasKey(i => new {i.ServiceId, i.UserId});
+        }
     }
 }

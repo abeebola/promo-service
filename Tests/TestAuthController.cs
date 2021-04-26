@@ -9,7 +9,7 @@ using PromoCodesAPI.Services.AuthService;
 using PromoCodesAPI.Services.UserService;
 using Tests.Data;
 using Tests.Helpers;
-using static PromoCodesAPI.DTOs.UserDTO;
+using PromoCodesAPI.DTOs;
 
 namespace Tests
 {

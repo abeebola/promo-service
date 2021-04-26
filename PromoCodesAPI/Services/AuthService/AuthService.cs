@@ -27,7 +27,7 @@ namespace PromoCodesAPI.Services.AuthService
             _appSettings = appSettings.Value;
         }
 
-        public async Task<UserDTO.LoginResponse> LoginInUser(UserDTO.LoginDto loginDto)
+        public async Task<LoginResponse> LoginInUser(LoginDto loginDto)
         {
             var user = await _userService.UserExistsByEmail(loginDto.Email);
             if (user == null || Authenticate(user, loginDto.Password) == null)
@@ -37,7 +37,7 @@ namespace PromoCodesAPI.Services.AuthService
 
             var token = GenerateToken(user);
 
-            return new UserDTO.LoginResponse
+            return new LoginResponse
             {
                 Email = user.Email,
                 FirstName = user.FirstName,

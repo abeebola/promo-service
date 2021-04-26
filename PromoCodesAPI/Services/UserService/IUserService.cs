@@ -1,5 +1,5 @@
 ﻿using System;
-using static PromoCodesAPI.DTOs.UserDTO;
+using PromoCodesAPI.DTOs;
 using System.Threading.Tasks;
 using PromoCodesAPI.Models;
 
