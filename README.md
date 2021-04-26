@@ -39,8 +39,14 @@ At this point, the app should build and open up a swagger UI for testing.
 5. Access the endpoints using the base URL `http://localhost:5000`. For example, the Login endpoint will be: `http://localhost:5000/auth/login`.
 
 
+## How to run tests
+1. Run `cd Tests/` to enter tests project
+2. Run `dotnet test`
+
+
 ## Considerations
 1. Since the `InMemory` database option of EF core is fast enough, I preferred to use it for the Unit tests instead of mocking the `DBContext`.
 2. No extensive mocking.
 3. Swagger generated pages don't have enough descriptions. I had to squeeze time to do this. It's a very busy period for me at this time (handling a new product launch)
 4. No extensive validations e.g validating if email passed is a valid email address - only uniqueness is currently validated.
+5. No promo code validation.
