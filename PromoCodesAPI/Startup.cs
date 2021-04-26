@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -103,6 +105,11 @@ namespace PromoCodesAPI
 
                     }
                 });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 
@@ -116,7 +123,9 @@ namespace PromoCodesAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PromoCodesAPI v1"));
             }
 
-            app.UseHttpsRedirection();
+
+            // Disabling this since it's not an actual production app
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
